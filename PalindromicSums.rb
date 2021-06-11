@@ -1,19 +1,15 @@
-# Test cases
+requiredPalindromesArray = Array.new
+
 TestCases = gets.to_i
 
 TestCases.times do
-
+    # Test inputs
     inputArray = gets.split.map(&:to_i)
-
-    # Integer N as num     
     num = inputArray[0]
-
-    # Difference in the AP series
     diff = inputArray[1]
 
     # Function to check if a number is palindrome or not
     def isPalindrome(number)
-        # Converting integer to string
         numberString = number.to_s
 
         if numberString == numberString.reverse
@@ -21,31 +17,25 @@ TestCases.times do
         else
             return false
         end
-        
     end
 
-    requiredPalindromesArray = Array.new
-    sumOfSquares = 0
-    lowerBound = 1
-    upperBound = num
+    # Finding nearest square of the palindrome
+    upperBound = Math.sqrt(num).to_i
+    sumOfSquares = 0, lowerBound = 1
 
     while (lowerBound < upperBound)
         for a in (lowerBound..upperBound).step(diff) do
             sumOfSquares += a*a
 
-            if (sumOfSquares>num)
+            if (sumOfSquares>=num)
                 break
             end
-
-            if (isPalindrome(sumOfSquares) and a!=lowerBound and (sumOfSquares.to_s.reverse[0] != 0))
-                requiredPalindromesArray.append(sumOfSquares)
+            
+            if (a!=lowerBound)
+                if (isPalindrome(sumOfSquares))
+                    requiredPalindromesArray.append(sumOfSquares)
+                end
             end
-        end
-        
-        #Code Optimization - will exit while loop if square of lower bound 
-        # is more than num
-        if (a==lowerBound and sumOfSquares>num)
-            break 
         end
 
         sumOfSquares = 0
@@ -53,4 +43,5 @@ TestCases.times do
     end
 
     puts requiredPalindromesArray.uniq.sum
+    requiredPalindromesArray.clear
 end
