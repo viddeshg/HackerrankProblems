@@ -5,7 +5,7 @@ TestCases.times do
 
     inputArray = gets.split.map(&:to_i)
 
-    # Integer N     
+    # Integer N as num     
     num = inputArray[0]
 
     # Difference in the AP series
@@ -24,62 +24,33 @@ TestCases.times do
         
     end
 
-    # Storing all palindrones under the outer bound in an array
-    palindromeArray  = Array.new
-    loop = 1
-    while (loop!= num)
-        # digits ending in 0 cannot become a palindrome
-        if (loop.to_s.reverse[0] == 0)
-            loop += 1
-        else 
-            if isPalindrome(loop)
-                palindromeArray.append(loop)
-                loop += 1
-            else 
-                loop += 1
-            end
-        end
-    end
+    requiredPalindromesArray = Array.new
+    sumOfSquares = 0
+    lowerBound = 1
+    upperBound = num
 
-    # Checking each element of the palindrome array
-    requiredPalindromesArray  = Array.new
+    while (lowerBound < upperBound)
+        for a in (lowerBound..upperBound).step(diff) do
+            sumOfSquares += a*a
 
-    palindromeArray.each do |palindrome|
-
-        # Finding nearest square of the palindrome
-        seriesUpperBound = Math.sqrt(palindrome).to_i
-
-        seriesLowerBound = 1
-        sumOfSquares = 0
-
-        while (seriesLowerBound<seriesUpperBound)
-            # Setting lower bound as the first term
-            a = seriesLowerBound
-
-            for a in (seriesLowerBound..seriesUpperBound).step(diff) do
-                sumOfSquares += a*a
-
-                # Break the Loop if sum of squares is equal to the palindrome 
-                # or greater than it
-                if sumOfSquares >= palindrome
-                    if sumOfSquares == palindrome
-                        requiredPalindromesArray.append(palindrome)
-                    end
-                    break
-                end
-
-            end
-
-            # Break the Loop if sum of squares is equal to the palindrome 
-            if sumOfSquares == palindrome
+            if (sumOfSquares>num)
                 break
             end
 
-            sumOfSquares = 0
-            seriesLowerBound += 1
+            if (isPalindrome(sumOfSquares) and a!=lowerBound and (sumOfSquares.to_s.reverse[0] != 0))
+                requiredPalindromesArray.append(sumOfSquares)
+            end
         end
+        
+        #Code Optimization - will exit while loop if square of lower bound 
+        # is more than num
+        if (a==lowerBound and sumOfSquares>num)
+            break 
+        end
+
+        sumOfSquares = 0
+        lowerBound += 1
     end
 
-    puts requiredPalindromesArray.sum
-
+    puts requiredPalindromesArray.uniq.sum
 end
