@@ -21,7 +21,8 @@ TestCases.times do
 
     # Finding nearest square of the palindrome
     upperBound = Math.sqrt(num).to_i
-    sumOfSquares = 0, lowerBound = 1
+    sumOfSquares = 0 
+    lowerBound = 1
 
     while (lowerBound < upperBound)
         for a in (lowerBound..upperBound).step(diff) do
